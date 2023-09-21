@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.ozdamarsevval.todoapp.R
 import com.ozdamarsevval.todoapp.databinding.DialogAddTodoBinding
@@ -24,7 +25,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), TodoItemClickListener<Tod
 
         binding.apply {
             rvTodos.adapter = todoAdapter
-            todoAdapter.updateTodoList(LocalDatabase.getTodos())
+            //todoAdapter.updateTodoList(LocalDatabase.getTodos())
             floatingActionButton.setOnClickListener {
                 showDialog()
             }
@@ -41,30 +42,42 @@ class HomeFragment : Fragment(R.layout.fragment_home), TodoItemClickListener<Tod
             btnAddTodo.setOnClickListener {
                 val title = tvTitle.text.toString()
                 val description = tvDescription.text.toString()
-                when (rgPriority.checkedRadioButtonId) {
+                priority = when (rgPriority.checkedRadioButtonId) {
                     rbLowPriority.id -> {
-                        priority = 0
+                        1
                     }
+
                     rbMediumPriority.id -> {
-                        priority = 1
+                        2
                     }
+
                     rbHighPriority.id -> {
-                        priority = 2
+                        3
                     }
+
+                    else -> 0
                 }
-                LocalDatabase.addTodo(
-                    title = title,
-                    description = description,
-                    priority = priority
-                )
-                todoAdapter.updateTodoList(LocalDatabase.getTodos())
-                dialog.dismiss()
+                if (!title.isNullOrEmpty() && !description.isNullOrEmpty()) {
+                    LocalDatabase.addTodo(
+                        title = title,
+                        description = description,
+                        priority = priority
+                    )
+                    todoAdapter.updateTodoList(LocalDatabase.getTodos())
+                    dialog.dismiss()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Title and description is required",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
         dialog.show()
     }
 
-    override fun onItemDeleteClick(position: Int, item: Todo) {
+    override fun onItemDeleteClick(item: Todo) {
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
             LocalDatabase.deleteTodo(item.id)

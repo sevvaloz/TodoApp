@@ -1,7 +1,5 @@
 package com.ozdamarsevval.todoapp.ui.home
 
-import android.graphics.Paint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -35,19 +33,15 @@ class TodoAdapter(private val clickListener: TodoItemClickListener<Todo>) :
             title.text = todo.title
             description.text = todo.description
             checkBox.isChecked = todo.isChecked
-            title.paintFlags = title.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-            description.paintFlags = description.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+
             checkBox.setOnClickListener {
-                if (checkBox.isChecked) {
-                    title.paintFlags = title.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                    description.paintFlags = description.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                    clickListener.onItemDeleteClick(position, todo)
-                }
+                clickListener.onItemDeleteClick(todo)
             }
+
             val backgroundColor = when (todo.priority) {
-                0 -> ContextCompat.getColor(root.context, R.color.lowPriority)
-                1 -> ContextCompat.getColor(root.context, R.color.mediumPriority)
-                2 -> ContextCompat.getColor(root.context, R.color.highPriority)
+                1 -> ContextCompat.getColor(root.context, R.color.lowPriority)
+                2 -> ContextCompat.getColor(root.context, R.color.mediumPriority)
+                3 -> ContextCompat.getColor(root.context, R.color.highPriority)
                 else -> ContextCompat.getColor(root.context, R.color.gray)
             }
             root.setCardBackgroundColor(backgroundColor)
