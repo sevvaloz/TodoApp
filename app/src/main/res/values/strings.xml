@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">To Do</string>
+    <string name="title">Exercise Routine</string>
+    <string name="desc">My daily exercise routine includes a morning jog for 30 minutes, followed by 20 minutes of yoga for flexibility and relaxation. Afterward, I do 45 minutes of strength training at the gym, and in the evening, I take a 20-minute walk.</string>
+</resources>
